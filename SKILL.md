@@ -64,18 +64,36 @@ guidance; numbers-only levels collapse to confidence ~0.5.
 A question whose honest answer is *"kind of"* for every case cannot gate anything. The
 model is not failing — you asked something that is mildly true of everything.
 
-**Diagnostic: run it over a sample and look at the spread.**
+**Diagnostic: run it over a sample and look at the spread** (`scripts/spread.py`).
 
 ```
                      median   range        spread
-ends_mid_thought       0.39   0.15-0.88      0.25   <- works
-starts_mid_thought     0.66   0.41-0.82      0.13   <- nearly constant
-dangling_reference     0.68   0.39-0.80      0.12   <- nearly constant
+ends_mid_thought       0.64   0.07-0.97      0.22   <- works
+starts_mid_thought     0.71   0.04-0.96      0.23   <- works
+dangling_reference     0.56   0.09-0.96      0.23   <- works
+standalone             0.53   0.07-0.93      0.17   <- marginal
+worth_clipping         0.87   0.64-0.91      0.07   <- constant: never says no
+needs_the_room         0.09   0.03-0.90      0.08   <- rare event: judge it on known positives
 ```
 
-The first separates cases confidently. The others sit in a narrow band and carry almost
-no information — and a 0.5 threshold on a distribution centred at 0.66 then rejects
-nearly everything, which looks like a strict model and is actually a bad question.
+Measured on 20,037 candidate clips, except `worth_clipping` (45: it was deleted after 38
+clips showed it was flat). Spread is the population standard deviation of the answers, and
+0.15 is roughly where a question stops carrying information.
+
+The constant is the instructive one. `worth_clipping` asked for a verdict of an
+already-filtered population (section 6) and answered between 0.64 and 0.91 for every item
+it saw: it never said no. A bar of 0.5 keeps all 45; raise it to 0.9 and it keeps 8, chosen from
+a band 0.27 wide, which is noise, not judgment. Two wordings gave the same result, so the wording was not the problem.
+
+A narrow band is not always a constant. `needs_the_room` has a spread of 0.08 because it is
+true for about 1% of clips, yet it still reaches 0.90 where it should. For a rare-event
+question, judge it on cases you know are positive, not on its spread.
+
+`starts_mid_thought` and `dangling_reference` once read 0.13 and 0.12 and were called nearly
+constant. They now read 0.23 each. The sample and the wording have both changed since (the
+criteria were rewritten from surface forms to situations, section 1), so this does not
+show that the rewrite caused it — only that a spread from a small early sample is a weak
+reason to condemn a question. Re-measure at scale before deleting one.
 
 If the spread is small, do not move the threshold. Fix the question or drop it.
 
