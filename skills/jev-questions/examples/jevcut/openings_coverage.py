@@ -1,7 +1,7 @@
 """For every labeled clip jevcut found, was the labeled start among the openings offered?
 
     uv run python openings_coverage.py > cases.jsonl    # run from a jevcut checkout
-    python PATH/TO/scripts/coverage.py cases.jsonl --tol 1.0
+    python SKILL_DIR/scripts/coverage.py cases.jsonl --tol 1.0
 
 Same replay as eval/experiments/opening_misses.py (the opening Choice answered from the
 response cache, no requests), but written out as coverage.py cases: `offered` maps each

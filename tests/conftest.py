@@ -2,5 +2,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "scripts"))
-sys.path.insert(0, str(ROOT / "examples"))
+SKILL = ROOT / "skills" / "jev-questions"
+sys.path.insert(0, str(ROOT))  # install.py
+sys.path.insert(0, str(SKILL / "scripts"))
+sys.path.insert(0, str(SKILL / "examples"))

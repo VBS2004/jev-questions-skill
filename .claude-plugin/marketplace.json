@@ -1,0 +1,19 @@
+{
+  "name": "jev-questions",
+  "owner": { "name": "Venkat Balaji S" },
+  "metadata": {
+    "description": "A skill for designing typed questions for Jev / TypeSafe System One, with scripts that check its rules."
+  },
+  "plugins": [
+    {
+      "name": "jev-questions",
+      "description": "Designing Noul, Choice and Score questions for Jev / TypeSafe System One, and debugging the ones that do not work. Includes a question linter, spread test, coverage check, chance baseline and threshold calibrator.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/jev-questions"],
+      "category": "development",
+      "homepage": "https://github.com/VBS2004/jev-questions-skill",
+      "tags": ["jev", "typesafe", "system-one", "llm-evaluation", "prompt-engineering"]
+    }
+  ]
+}
