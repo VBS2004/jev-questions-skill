@@ -242,3 +242,19 @@ baseline you have to beat before the request is worth making.
 The second-to-last is the one that masquerades as every other. A model cannot choose an
 option you did not offer, and in the logs that is indistinguishable from a bad judgment.
 Check coverage first, always.
+
+## 10. Scripts that check the rules
+
+`scripts/` (relative to this skill's directory) turns the checkable rules into tools. They
+use only the standard library and send no requests; the inputs are plain JSONL, so any
+project can feed them.
+
+| script | rule | what it answers |
+| --- | --- | --- |
+| `lint_questions.py PATH…` | 1, 3, 4, 6 | static scan of Python, JS/TS and JSON for word lists, a Choice with no escape, a state anchor made authoritative, negative phrasing over a positive `true`. Heuristic: a place to look |
+| `spread.py RESPONSES.jsonl` | 2 | does this question discriminate, or is it a constant? Adds AUC when you have labels |
+| `coverage.py CASES.jsonl` | 9 | was the right option ever offered? Splits misses into candidate-generator and question |
+| `chance.py picks\|spans` | 2 | what would random picks have scored at this density, and how many times better are you |
+| `threshold.py SCORES.jsonl` | 7 | where genuine content peaks, where the hard violations sit, and the bar between them |
+
+`examples/gate.py` is a runnable gate with the judgment/policy split of rule 7.
