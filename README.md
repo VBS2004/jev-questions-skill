@@ -16,11 +16,33 @@ filter, classifier or extractor built on it.
 ## Install
 
 ```bash
-git clone https://github.com/VBS2004/jev-questions-skill ~/.claude/skills/jev-questions
+curl -fsSL https://raw.githubusercontent.com/VBS2004/jev-questions-skill/main/install.py | python3 -
 ```
 
-Claude Code loads it when you build or debug a System One question. You can also just read
-[SKILL.md](SKILL.md); it is plain Markdown.
+It lists the coding agents it knows (21 of them), ticks the ones it finds on your machine,
+and lets you toggle the rest with a numbered checklist. Or from a clone:
+
+```bash
+git clone https://github.com/VBS2004/jev-questions-skill && cd jev-questions-skill
+python3 install.py                    # the checklist
+python3 install.py --list             # every agent, its folder, found or not
+python3 install.py --yes              # every agent it detects, no questions
+python3 install.py --agents claude,codex,hermes
+python3 install.py --uninstall
+```
+
+One copy of the skill is kept (your clone, or `~/.local/share/jev-questions-skill`) and each
+agent gets a symlink to it, so `git pull` or `install.py --update` updates all of them. Use
+`--copy` where a tool does not follow symlinks and `--dry-run` to see what it would do.
+It never overwrites a folder that is not its own, unless you pass `--force`, which moves
+the old one aside to `.bak`.
+
+The skill is a `SKILL.md` with `name` and `description` frontmatter, the format Claude Code,
+Codex, Antigravity and Hermes all read; the agents differ only in which folder they look in.
+`--list` marks how sure each folder is: **verified** (it exists on a real machine with real
+skills in it, or the tool's source says so), **documented**, or **unverified** (from memory
+of the tool's conventions; a wrong guess just creates an unused folder). Corrections and
+more agents are welcome in the `AGENTS` table at the top of [`install.py`](install.py).
 
 ## The rules ([SKILL.md](SKILL.md))
 
